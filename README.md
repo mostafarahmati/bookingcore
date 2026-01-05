@@ -63,17 +63,18 @@ cd bookingcore
 # 2. Copy environment file
 cp .env.example .env
 
-# 3. Start containers
+
+# 3. Install dependencies
+composer install --ignore-platform-reqs
+
+# 4. Start containers
 ./vendor/bin/sail up -d
 
-# 4. Generate app key
+# 5. Generate app key
 ./vendor/bin/sail artisan key:generate
 
-# 5. Run database migrations
+# 6. Run database migrations
 ./vendor/bin/sail artisan migrate
-
-# 6. (Optional) Add sample data
-./vendor/bin/sail artisan db:seed --class=EventSeeder
 
 # 7. Create admin user for panel
 ./vendor/bin/sail artisan make:filament-user
