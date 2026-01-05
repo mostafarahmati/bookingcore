@@ -4,61 +4,129 @@
   </a>
 </p>
 
-<p align="center">
-  <a href="https://github.com/your-username/booking-service/actions"><img src="https://github.com/your-username/booking-service/workflows/tests/badge.svg" alt="Build Status"></a>
-  <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-  <a href="https://github.com/your-username/booking-service"><img src="https://img.shields.io/github/stars/your-username/booking-service?style=social" alt="Stars"></a>
-  <a href="https://github.com/your-username/booking-service"><img src="https://img.shields.io/github/license/your-username/booking-service" alt="License"></a>
-</p>
+# BookingCore - Event Booking System
 
-## Booking Service – سیستم رزرو رویداد
+A simple event reservation system built with **Laravel 11**.
 
-یک سیستم رزرو رویداد کامل و مدرن ساخته‌شده با **Laravel 11**، پنل مدیریت حرفه‌ای **Filament 3**، دیتابیس **MySQL**، کش **Redis** و احراز هویت امن API با **Laravel Sanctum**.
+## What the Reservation Service Does
 
-کاربران می‌توانند از طریق API ثبت‌نام کنند، وارد شوند، رویدادها را مشاهده کنند، رزرو انجام دهند و رزروهای خود را مدیریت کنند.  
-ادمین‌ها هم از طریق پنل زیبا و قدرتمند Filament می‌توانند کاربران، رویدادها و رزروها را به‌طور کامل مدیریت کنند.
+Users can:
 
-### ویژگی‌های اصلی
+- Register and login
+- View the list of events and event details
+- Book an event (if there is capacity and they have not booked it before)
+- Cancel their own booking
 
-- ثبت‌نام و ورود کاربر از طریق API
-- احراز هویت توکن‌بیس با Laravel Sanctum
-- مشاهده لیست رویدادها همراه با تعداد رزروهای فعلی
-- رزرو رویداد با چک ظرفیت و جلوگیری از رزرو تکراری
-- مشاهده و لغو رزروهای شخصی
-- پنل مدیریت کامل با Filament 3:
-  - مدیریت کاربران، رویدادها و رزروها
-  - مشاهده رزروهای هر کاربر مستقیماً در صفحه ویرایش کاربر
-- محیط توسعه کاملاً داکرایز شده با Laravel Sail (MySQL + Redis)
+The system checks the real capacity of each event and race condition.
 
-## تکنولوژی‌های استفاده‌شده
 
-- Laravel 11
-- Filament 3 (پنل مدیریت)
-- Laravel Sanctum (احراز هویت API)
-- MySQL
-- Redis
-- Laravel Sail (Docker)
 
-## پیش‌نیازها
 
-- Docker و Docker Compose
-- Git
 
-## نصب و راه‌اندازی
+
+
+
+
+
+
+
+## Important Links
+
+- **Admin Panel (Filament)**: http://localhost/admin  
+  (For managing users, events, and reservations)
+
+
+
+
+
+
+
+
+- **API Documentation (Swagger)**: http://localhost/api/documentation  
+  (Interactive docs - use Bearer token for protected endpoints)
+
+
+
+
+- **Base API URL**: http://localhost/api
+
+- **Live Tests Page**: http://localhost/test/reservation-service  
+  (Run and view tests online)
+
+## How to Install on Local (with Docker - Laravel Sail)
 
 ```bash
-git clone https://github.com/your-username/booking-service.git
-cd booking-service
+# 1. Clone the project
+git clone https://github.com/mostafarahmati/bookingcore.git
+cd bookingcore
 
+# 2. Copy environment file
 cp .env.example .env
 
+# 3. Start containers
 ./vendor/bin/sail up -d
 
+# 4. Generate app key
 ./vendor/bin/sail artisan key:generate
+
+# 5. Run database migrations
 ./vendor/bin/sail artisan migrate
 
-# (اختیاری) سید داده‌های نمونه
+# 6. (Optional) Add sample data
 ./vendor/bin/sail artisan db:seed --class=EventSeeder
 
-# ساخت کاربر ادمین برای پنل Filament
+# 7. Create admin user for panel
 ./vendor/bin/sail artisan make:filament-user
+# Enter email and password
+
+# 8. Generate Swagger docs
+./vendor/bin/sail artisan l5-swagger:generate
+```
+
+
+
+
+
+
+
+
+## How to Install on Server (without Docker)
+
+```bash
+git clone https://github.com/mostafarahmati/bookingcore.git
+cd bookingcore
+
+composer install
+cp .env.example .env
+php artisan key:generate
+
+# Set database details in .env
+php artisan migrate
+
+# Create admin user
+php artisan make:filament-user
+
+php artisan l5-swagger:generate
+```
+
+Point your web server (Nginx or Apache) to the `public` folder.
+
+## Run Tests
+
+```bash
+./vendor/bin/sail artisan test    # On local with Sail
+# or
+php artisan test                  # On server
+```
+
+## Useful Commands
+
+```bash
+./vendor/bin/sail shell    # Enter container
+./vendor/bin/sail logs     # View logs
+./vendor/bin/sail down     # Stop containers
+```
+
+If you have problems, email: mostafarahmati@outlook.com
+
+License: MIT
