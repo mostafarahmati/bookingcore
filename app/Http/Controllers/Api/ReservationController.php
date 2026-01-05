@@ -7,7 +7,7 @@ use App\Models\Reservation;
 use App\Services\ReservationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use App\Http\Requests\StoreReservationRequest;
 /**
  * @OA\Tag(
  *     name="Reservations",
@@ -65,25 +65,20 @@ class ReservationController extends Controller
      *     @OA\Response(response=400, description="Event is full or already reserved")
      * )
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'event_id' => 'required|exists:events,id',
-        ]);
 
-        try {
-            $reservation = $this->reservationService->createReservation(
-                eventId: $request->event_id,
-                userId: Auth::id()
-            );
 
-            return response()->json($reservation->load('event'), 201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => $e->getMessage()
-            ], $e->getCode() ?: 400);
-        }
-    }
+public function store(StoreReservationRequest $request)
+{
+    $user = $request->user();
+    $eventId = $request->validated()['event_id'];
+
+    $reservation = $this->reservationService->createReservation($eventId, $user->id);
+
+    return response()->json([
+        'message' => 'رزرو با موفقیت انجام شد.',
+        'reservation' => $reservation
+    ], 201);
+}
 
     /**
      * @OA\Delete(
